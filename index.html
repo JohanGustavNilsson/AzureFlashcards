@@ -525,6 +525,7 @@ const LearningObjectives = [
                 }
             }
         });
+
         document.addEventListener('touchstart', (event) => {
             startX = event.touches[0].clientX;
             startY = event.touches[0].clientY;
@@ -549,13 +550,13 @@ const LearningObjectives = [
                 }
             } else {
                 // Vertical swipe
-                if (Math.abs(deltaY)) > 50) {
-			const flashcardElement = document.querySelector('.flashcard');
-			if (flashcardElement) {
-				const answerElement = flashcardElement.querySelector('.hidden');
-				answerElement.classList.toggle('hidden');
-			}
-                }
+                if (Math.abs(deltaY) > 50) {
+					const flashcardElement = document.querySelector('.flashcard');
+					if (flashcardElement) {
+						const answerElement = flashcardElement.querySelector('.hidden');
+						answerElement.classList.toggle('hidden');
+					}
+                } 
             }
         }
 
