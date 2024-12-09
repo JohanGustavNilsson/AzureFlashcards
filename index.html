@@ -527,18 +527,35 @@ const LearningObjectives = [
         });
         document.addEventListener('touchstart', (event) => {
             startX = event.touches[0].clientX;
+            startY = event.touches[0].clientY;
         });
 
         document.addEventListener('touchend', (event) => {
             endX = event.changedTouches[0].clientX;
+            endY = event.changedTouches[0].clientY;
             handleSwipe();
         });
 
         function handleSwipe() {
-            if (startX - endX > 50) {
-                showNextFlashcard();
-            } else if (endX - startX > 50) {
-                showPreviousFlashcard();
+            const deltaX = startX - endX;
+            const deltaY = startY - endY;
+
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // Horizontal swipe
+                if (deltaX > 50) {
+                    showNextFlashcard();
+                } else if (deltaX < -50) {
+                    showPreviousFlashcard();
+                }
+            } else {
+                // Vertical swipe
+                if (Math.abs(deltaY)) > 50) {
+			const flashcardElement = document.querySelector('.flashcard');
+			if (flashcardElement) {
+				const answerElement = flashcardElement.querySelector('.hidden');
+				answerElement.classList.toggle('hidden');
+			}
+                }
             }
         }
 
