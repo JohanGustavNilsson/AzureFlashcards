@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Flashcards</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .flashcard { border: 1px solid #ccc; padding: 20px; margin: 20px; text-align: center; }
+        .hidden { display: none; }
+        .controls { display: flex; align-items: center; gap: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Azure Flashcards</h1>
+    <div class="controls">
+        <label for="flashcard-set">Deck:</label>
+        <select id="flashcard-set" onchange="loadFlashcards()">
+            <option value="DescribeAzureManagementAndGovernance">Describe Azure Management and Governance</option>
+            <option value="DescribeAzureArchitectureAndServices">Describe Azure Architecture and Services</option>
+            <option value="DescribeCloudConcepts">Describe Cloud Concepts</option>
+            <option value="LearningObjectives">Flashcards for learning objectives</option>
+        </select>
+        <label>
+            <input type="checkbox" id="flipCheckbox" onchange="toggleFlip()"> Flip Q&A
+        </label>
+    </div>
+	<div class="navigation">
+        <p id="counter"></p>
+        <button onclick="showPreviousFlashcard()">Back</button>
+        <button onclick="showNextFlashcard()">Next</button>
+		<button onclick="randomizeFlashcards()">Randomize</button>
+    </div>
+    <div id="flashcard-container"></div>
+
+
+    <script>
+        const DescribeAzureManagementAndGovernance = [
+    {
+        question: "What factors affect costs in Azure?",
+        answer: "Costs vary based on resource type, consumption, maintenance, geography, network traffic, subscription type, and Azure Marketplace."
+    },
+    {
+        question: "What is the purpose of the Microsoft Cost Management Tool? What are some of its important features?",
+        answer: "It helps manage and control Azure resource costs with features like Cost Analysis, Cost Alerts, and Budgets."
+    },
+    {
+        question: "What are the purposes of tags in Azure?",
+        answer: "For costs: estimate, budget, track. Managing: allocate resources, organize, security structure, regulatory compliance.   "
+    },
+    {
+        question: "What is Microsoft Purview?",
+        answer: "A suite of data governance, risk, and compliance solutions providing a unified view of data across environments. It includes features like Automated Data Discovery, Sensitive Data Classification, and End-to-End Data Lineage."
+    },
+    {
+        question: "What is the purpose of Azure Policy?",
+        answer: "Ensures resources stay compliant with corporate standards by creating, assigning, and managing policies. It includes features like Individual Policies and Initiatives, Built-in Definitions, and Automatic Remediation."
+    },
+    {
+        question: "What are resource locks in Azure?",
+        answer: "Resource locks prevent accidental deletion or modification of Azure resources. Types include Delete and ReadOnly locks."
+    },
+    {
+        question: "What is the Service Trust Portal?",
+        answer: "Provides access to resources about Microsoft's security, privacy, and compliance practices, including documents, tools, and other resources."
+    },
+    {
+        question: "What tools are available for interacting with Azure?",
+        answer: "Azure Portal, Azure Cloud Shell, Azure PowerShell, and Azure CLI."
+    },
+    {
+        question: "What is Azure Arc? What are some of its important features?",
+        answer: "Simplifies governance and management of hybrid and multi-cloud environments by extending Azure compliance and monitoring to non-Azure resources. It includes features like Unified Management, Multi-cloud and Hybrid Management, and DevOps Integration."
+    },
+    {
+        question: "What is Azure Resource Manager (ARM)?",
+        answer: "A deployment and management service for Azure that manages infrastructure through declarative templates. ARM Templates ensure consistent and repeatable deployments."
+    },
+    {
+        question: "What is Bicep?",
+        answer: "A simplified language for deploying Azure resources, offering support for all resource types and idempotent deployments."
+    },
+    {
+        question: "What is Azure Advisor?",
+        answer: "Evaluates Azure resources and provides recommendations to improve reliability, security, performance, operational excellence, and cost efficiency."
+    },
+    {
+        question: "What is Azure Service Health?",
+        answer: " Monitors the status of Azure resources and the overall Azure infrastructure, as well as information about current incidents and planned maintenance."
+    },
+    {
+        question: "What is Azure Monitor? What are some of its important features?",
+        answer: "A platform for collecting, analyzing, visualizing, and acting on data from Azure, on-premises, and multi-cloud resources. It includes features like Azure Log Analytics, Azure Monitor Alerts, and Application Insights."
+    }
+        ];
+		
+		const DescribeAzureArchitectureAndServices = [
+	{
+		question: "What are Azure region pairs?",
+		answer: "Most Azure regions are paired with another region within the same geography for redundancy."
+	},
+	{
+		question: "What are the key facts about Azure management groups?",
+		answer: "Supports up to 10,000 management groups, a tree can have up to six levels of depth, and each group can have only one parent."
+	},
+	{
+		question: "When are VMs an ideal choice?",
+		answer: "When you need total control over the OS, the ability to run custom software, and custom hosting configurations."
+	},
+	{
+		question: "What is Azure Virtual Desktop?",
+		answer: "A cloud service providing secure, scalable, and cost-efficient remote desktop and application experiences on Windows 10 and 11."
+	},
+	{
+		question: "What are Azure Container Instances?",
+		answer: "A service that allows you to upload and run containers without managing the underlying infrastructure."
+	},
+	{
+		question: "What is Azure Functions?",
+		answer: "An event-driven, serverless compute service that automatically scales and is cost-efficient."
+	},
+	{
+		question: "What is Azure App Service?",
+		answer: "A platform for building and hosting web apps, APIs, and mobile back-ends with automatic scaling and high availability."
+	},
+	{
+		question: "What is Azure Kubernetes Service (AKS)?",
+		answer: "A container orchestration service that simplifies the management of a fleet of containers."
+	},
+	{
+		question: "What are Azure Virtual Private Networks (VPNs)?",
+		answer: "Use encrypted tunnels to connect trusted networks over the public internet, ensuring secure data transfer."
+	},
+	{
+		question: "What is Azure ExpressRoute?",
+		answer: "Extends on-premises networks to the Microsoft cloud via private connections, offering higher reliability and security."
+	},
+	{
+		question: "What is Azure DNS?",
+		answer: "A hosting service for DNS domains using Azure infrastructure, offering name resolution and management of DNS records."
+	},
+	{
+		question: "What are the types of Azure storage redundancy?",
+		answer: "Locally redundant storage (LRS): 3 copies in one data center; Zone-redundant storage (ZRS): 3 copies across zones in one region; Geo-redundant storage (GRS): 3 copies in primary and secondary regions; Read-access geo-redundant storage (RA-GRS): GRS with read access to secondary; Geo-zone-redundant storage (GZRS): ZRS plus GRS; Read-access geo-zone-redundant storage (RA-GZRS): GZRS with read access to secondary."
+	},
+	{
+		question: "What is Azure Blob Storage?",
+		answer: "An object storage solution for the cloud, ideal for storing massive amounts of unstructured data."
+	},
+	{
+		question: "What is Azure Migrate?",
+		answer: "A centralized hub for managing the migration process with integrated tools for discovery, assessment, and migration."
+	},
+	{
+		question: "What is Microsoft Entra ID?",
+		answer: "A cloud-based identity and access management service for managing identities for Microsoft cloud applications."
+	},
+	{
+		question: "What is Azure Conditional Access?",
+		answer: "A tool in Microsoft Entra ID that controls access to resources based on identity signals like user, location, and device."
+	},
+	{
+		question: "What is Azure Role-Based Access Control (RBAC)?",
+		answer: "Manages access to Azure resources by assigning roles to users, groups, or services based on the principle of least privilege."
+	},
+	{
+		question: "What is the Zero Trust Model?",
+		answer: "A security model that assumes breach and verifies every request as if it comes from an uncontrolled network. Use Least Privilege Access."
+	},
+	{
+		question: "What is Microsoft Defender for Cloud?",
+		answer: "Provides unified security management and advanced threat protection across hybrid cloud environments."
+	}
+];
+
+
+        const DescribeCloudConcepts = [
+    {
+        question: "What is cloud computing?",
+        answer: "The delivery of computing services over the internet, including virtual machines, storage, databases, and networking."
+    },
+    {
+        question: "What is the shared responsibility model?",
+        answer: "Some responsibilities are on Azure, some on the customer, and some are shared."
+    },
+    {
+        question: "What is Infrastructure as a Service (IaaS)?",
+        answer: "Provides virtualized computing resources over the internet, like servers and storage, which you can manage and configure as needed. Basically renting space in a datacenter."
+    },
+    {
+        question: "What is Platform as a Service (PaaS)?",
+        answer: "Offers a platform with development tools and services for developing, running, and managing applications without worrying about the underlying infrastructure."
+    },
+    {
+        question: "What is Software as a Service (SaaS)?",
+        answer: "Delivers software applications over the internet on a subscription basis."
+    },
+    {
+        question: "What are the three main cloud models?",
+        answer: "Private, public, and hybrid. A private cloud model is only used by one entity (on-prem). Public is a third-party service."
+    },
+    {
+        question: "What is the consumption-based model? What is CapEx and OpEx?",
+        answer: "A model where you pay for cloud services based on usage, with expenses categorized as capital expenditure (CapEx) and operational expenditure (OpEx)."
+    },
+    {
+        question: "What are important considerations for cloud services?",
+        answer: "Uptime (availability) and the ability to handle demand (scalability)."
+    },
+    {
+        question: "What is scalability in cloud computing? What is the difference between vertical and horizontal scaling?",
+        answer: "The ability to adjust resources to meet demand, including vertical scaling (adding more CPUs or RAM) and horizontal scaling (adding more VMs or containers). Vertical scaling adds more resources to a single instance, while horizontal scaling adds more instances."
+    },
+    {
+        question: "What is the purpose of Service-Level Agreements (SLAs)?",
+        answer: "To define what to expect in terms of service availability and performance."
+    },
+    {
+        question: "What is the role of governance in cloud computing?",
+        answer: "Ensuring that cloud services meet company or government requirements. Especially difficult for IaaS because you need to do all the patching, but this can also an advantage if you want more control."
+    },
+    {
+        question: "What is built-in security in cloud services?",
+        answer: "Examples include protection against distributed denial of service (DDoS), automatic patching, automatic maintenance, etc."
+    },
+    {
+        question: "What is manageability in cloud services?",
+        answer: "Your ability to monitor and configure cloud services. Includes the ability to automatically scale and deploy resources, monitor resource health, replace failing resources, and receive real-time performance alerts."
+    },
+    {
+        question: "What is the main responsibility of the cloud provider in IaaS?",
+        answer: "Maintaining the hardware, network connectivity, and physical security."
+    },
+    {
+        question: "What is the main responsibility of the customer in IaaS?",
+        answer: "Operating system installation, configuration, maintenance, and network configuration."
+    },
+    {
+        question: "What is the main benefit of PaaS?",
+        answer: "Providing a complete development environment without the headache of maintaining all the development infrastructure."
+    },
+    {
+        question: "What is the main benefit of SaaS?",
+        answer: "Renting or using a fully developed application, with the customer responsible for the data, devices, and users."
+    }
+        ];
+const LearningObjectives = [
+    {
+        question: "What is cloud computing?",
+        answer: "Cloud computing is the delivery of computing services over the internet, including virtual machines, storage, databases, and networking."
+    },
+    {
+        question: "What is the shared responsibility model?",
+        answer: "Some responsibilities are on Azure, some on the customer, and some are shared."
+    },
+    {
+        question: "What are the three main cloud models?",
+        answer: "Public, private, and hybrid."
+    },
+    {
+        question: "What are appropriate use cases for each cloud model?",
+        answer: "Public: scalable and cost-effective solutions. Private: enhanced security and control. Hybrid: flexibility and balanced approach."
+    },
+    {
+        question: "What is the consumption-based model? What is CapEx and OpEx?",
+        answer: "A model where you pay for cloud services based on usage, with expenses categorized as capital expenditure (CapEx) and operational expenditure (OpEx)."
+    },
+    {
+        question: "What are the benefits of high availability and scalability in the cloud?",
+        answer: "Ensures continuous operation and the ability to handle increased demand."
+    },
+    {
+        question: "What are the benefits of reliability and predictability in the cloud?",
+        answer: "Consistent performance and cost management."
+    },
+    {
+        question: "What are the benefits of security and governance in the cloud?",
+        answer: "Enhanced protection and compliance with regulations."
+    },
+    {
+        question: "What are the benefits of manageability in the cloud?",
+        answer: "Simplified resource management and automation."
+    },
+    {
+        question: "What is Infrastructure as a Service (IaaS)?",
+        answer: "Provides virtualized computing resources over the internet, like servers and storage, which you can manage and configure as needed."
+    },
+    {
+        question: "What is Platform as a Service (PaaS)?",
+        answer: "Offers a platform with tools and services for developing, running, and managing applications without worrying about the underlying infrastructure."
+    },
+    {
+        question: "What is Software as a Service (SaaS)?",
+        answer: "Delivers software applications over the internet on a subscription basis, accessible via a web browser."
+    },
+    {
+        question: "What are appropriate use cases for each cloud service (IaaS, PaaS, SaaS)?",
+        answer: "IaaS: lift-and-shift migrations, testing and development. PaaS: application development. SaaS: using fully developed applications."
+    },
+    {
+        question: "What are Azure storage services?",
+        answer: "Services include Blob Storage, Queue Storage, Table Storage, and Azure Files."
+    },
+    {
+        question: "What are Azure storage tiers?",
+        answer: "Hot, Cool, and Archive tiers."
+    },
+    {
+        question: "What are Azure storage redundancy options?",
+        answer: "LRS, GRS, RA-GRS, ZRS, GZRS, RA-GZRS."
+    },
+    {
+        question: "What are Azure storage account options and types?",
+        answer: "Standard general-purpose v2, Premium block blobs, Premium file shares, Premium page blobs."
+    },
+    {
+        question: "What are options for moving files in Azure?",
+        answer: "AzCopy, Azure Storage Explorer, and Azure File Sync."
+    },
+    {
+        question: "What are migration options in Azure?",
+        answer: "Azure Migrate and Azure Data Box."
+    },
+    {
+        question: "What are directory services in Azure?",
+        answer: "Microsoft Entra ID and Microsoft Entra Domain Services."
+    },
+    {
+        question: "What are authentication methods in Azure?",
+        answer: "Single sign-on (SSO), multifactor authentication (MFA), and passwordless authentication."
+    },
+    {
+        question: "What are external identities and guest access in Azure?",
+        answer: "Allows secure interaction with external users and guests."
+    },
+    {
+        question: "What is Microsoft Entra Conditional Access?",
+        answer: "Controls access to resources based on identity signals like user, location, and device."
+    },
+    {
+        question: "What is Azure Role-Based Access Control (RBAC)?",
+        answer: "Manages access to Azure resources by assigning roles to users, groups, or services based on the principle of least privilege."
+    },
+    {
+        question: "What is the concept of Zero Trust?",
+        answer: "A security model that assumes breach and verifies every request as if it comes from an uncontrolled network."
+    },
+    {
+        question: "What is the purpose of the defense in depth model?",
+        answer: "Uses multiple layers of defense to protect information and prevent unauthorized access."
+    },
+    {
+        question: "What is Microsoft Defender for Cloud?",
+        answer: "Provides unified security management and advanced threat protection across hybrid cloud environments."
+    },
+    {
+        question: "What factors can affect costs in Azure?",
+        answer: "Resource type, consumption, maintenance, geography, network traffic, subscription type, Azure Marketplace."
+    },
+    {
+        question: "What is the Pricing calculator?",
+        answer: "Estimates the cost of provisioning Azure resources."
+    },
+    {
+        question: "What is the Total Cost of Ownership (TCO) calculator?",
+        answer: "Compares the costs of running on-premises infrastructure versus Azure Cloud infrastructure."
+    },
+    {
+        question: "What is the Microsoft Cost Management Tool?",
+        answer: "Helps manage and control Azure resource costs with features like Cost Analysis, Cost Alerts, and Budgets."
+    },
+    {
+        question: "What is the purpose of tags in Azure?",
+        answer: "Helps organize and manage resources, report costs, allocate budgets, and track spending."
+    },
+    {
+        question: "What is the purpose of Microsoft Purview? What are some of its important features?",
+        answer: "A suite of data governance, risk, and compliance solutions providing a unified view of data across environments."
+    },
+    {
+        question: "What is the purpose of Azure Policy? What are some of its important features?",
+        answer: "Ensures resources stay compliant with corporate standards by creating, assigning, and managing policies."
+    },
+    {
+        question: "What is the purpose of resource locks in Azure?",
+        answer: "Prevents accidental deletion or modification of Azure resources."
+    },
+    {
+        question: "What is the Service Trust Portal?",
+        answer: "Provides access to resources about Microsoft's security, privacy, and compliance practices."
+    },
+    {
+        question: "What is the Azure portal?",
+        answer: "A web-based, unified console for managing Azure resources with a graphical interface."
+    },
+    {
+        question: "What is Azure Cloud Shell?",
+        answer: "A browser-based shell tool that supports both Azure PowerShell and Azure CLI (Bash)."
+    },
+    {
+        question: "What is the purpose of Azure Arc?",
+        answer: "Simplifies governance and management of hybrid and multi-cloud environments by extending Azure compliance and monitoring."
+    },
+    {
+        question: "What is Azure Resource Manager (ARM)?",
+        answer: "A deployment and management service for Azure that manages infrastructure through declarative templates."
+    },
+    {
+        question: "What are Azure ARM templates?",
+        answer: "JSON files that define resources to deploy, ensuring consistent and repeatable deployments."
+    },
+    {
+        question: "What is the purpose of Azure Advisor?",
+        answer: "Evaluates Azure resources and provides recommendations to improve reliability, security, performance, operational excellence, and cost efficiency."
+    },
+    {
+        question: "What is Azure Service Health?",
+        answer: "Monitors the status of Azure resources and the overall Azure infrastructure, combining Azure Status, Service Health, and Resource Health."
+    },
+    {
+        question: "What is Azure Monitor?",
+        answer: "A platform for collecting, analyzing, visualizing, and acting on data from Azure, on-premises, and multi-cloud resources."
+    },
+    {
+        question: "What are Azure Log Analytics, Azure Monitor Alerts, and Application Insights?",
+        answer: "Tools within Azure Monitor for writing and running log queries, setting automated alerts, and monitoring web applications."
+    }
+];
+
+        let currentFlashcardIndex = 0;
+        let currentFlashcards = DescribeAzureManagementAndGovernance; //default set
+        let flipQandA = false;
+
+        function loadFlashcards() {
+            const selectedSet = document.getElementById('flashcard-set').value;
+            currentFlashcards = eval(selectedSet);
+            currentFlashcardIndex = 0;
+            showNextFlashcard();
+        }
+		function updateFlashcard() {
+			if (currentFlashcardIndex < currentFlashcards.length) { 
+				showNextFlashcard();
+				showPreviousFlashcard();
+			} else {
+				showNextFlashcard();	
+			}
+		}
+
+        function toggleFlip() {
+            flipQandA = document.getElementById('flipCheckbox').checked;
+			updateFlashcard()
+
+        }
+
+        function showNextFlashcard() {
+            const container = document.getElementById('flashcard-container');
+            container.innerHTML = '';
+            if (currentFlashcardIndex == currentFlashcards.length) {
+                currentFlashcardIndex -= 1;
+            }
+
+            const flashcard = currentFlashcards[currentFlashcardIndex];
+            const flashcardElement = document.createElement('div');
+            flashcardElement.className = 'flashcard';
+            if (flipQandA) {
+                flashcardElement.innerHTML = `<p>${flashcard.answer}</p><p class="hidden">${flashcard.question}</p>`;
+            } else {
+                flashcardElement.innerHTML = `<p>${flashcard.question}</p><p class="hidden">${flashcard.answer}</p>`;
+            }
+            flashcardElement.addEventListener('click', () => {
+                const answerElement = flashcardElement.querySelector('.hidden');
+                answerElement.classList.toggle('hidden');
+            });
+            container.appendChild(flashcardElement);
+            currentFlashcardIndex++;
+            updateCounter();
+        }
+
+        function showPreviousFlashcard() {
+            const container = document.getElementById('flashcard-container');
+            container.innerHTML = '';
+            if (currentFlashcardIndex == 1) {
+                currentFlashcardIndex += 1;
+            }
+
+            const flashcard = currentFlashcards[currentFlashcardIndex - 2];
+            const flashcardElement = document.createElement('div');
+            flashcardElement.className = 'flashcard';
+            if (flipQandA) {
+                flashcardElement.innerHTML = `<p>${flashcard.answer}</p><p class="hidden">${flashcard.question}</p>`;
+            } else {
+                flashcardElement.innerHTML = `<p>${flashcard.question}</p><p class="hidden">${flashcard.answer}</p>`;
+            }
+            flashcardElement.addEventListener('click', () => {
+                const answerElement = flashcardElement.querySelector('.hidden');
+                answerElement.classList.toggle('hidden');
+            });
+            container.appendChild(flashcardElement);
+            currentFlashcardIndex -= 1;
+            updateCounter();
+        }
+        function randomizeFlashcards() {
+            currentFlashcards = currentFlashcards.sort(() => Math.random() - 0.5);
+            currentFlashcardIndex = 0;
+			updateFlashcard()
+        }
+        function updateCounter() {
+            const counter = document.getElementById('counter');
+            counter.textContent = `${currentFlashcardIndex}/${currentFlashcards.length}`;
+			
+        }
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight' | event.key === 'd') {
+                showNextFlashcard();
+            } else if (event.key === 'ArrowLeft'| event.key === 'a') {
+                showPreviousFlashcard();
+            } else if (event.key === ' '| event.key === 'w' | event.key === 'ArrowUp') {
+                const flashcardElement = document.querySelector('.flashcard');
+                if (flashcardElement) {
+                    const answerElement = flashcardElement.querySelector('.hidden');
+                    answerElement.classList.toggle('hidden');
+                }
+            }
+        });
+
+        loadFlashcards();
+    </script>
+</body>
+</html>
