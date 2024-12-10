@@ -22,7 +22,7 @@
             <option value="DescribeAzureManagementAndGovernance">Describe Azure Management and Governance</option>
             <option value="DescribeAzureArchitectureAndServices">Describe Azure Architecture and Services</option>
             <option value="DescribeCloudConcepts">Describe Cloud Concepts</option>
-            <option value="LearningObjectives">Flashcards for learning objectives</option>
+            <option value="LearningObjectives">More learning objectives</option>
         </select>
         <label>
             <input type="checkbox" id="flipCheckbox" onchange="toggleFlip()"> Flip Q&A
@@ -249,54 +249,6 @@
         ];
 const LearningObjectives = [
     {
-        question: "What is cloud computing?",
-        answer: "Cloud computing is the delivery of computing services over the internet, including virtual machines, storage, databases, and networking."
-    },
-    {
-        question: "What is the shared responsibility model?",
-        answer: "Some responsibilities are on Azure, some on the customer, and some are shared."
-    },
-    {
-        question: "What are the three main cloud models?",
-        answer: "Public, private, and hybrid."
-    },
-    {
-        question: "What are appropriate use cases for each cloud model?",
-        answer: "Public: scalable and cost-effective solutions. Private: enhanced security and control. Hybrid: flexibility and balanced approach."
-    },
-    {
-        question: "What is the consumption-based model? What is CapEx and OpEx?",
-        answer: "A model where you pay for cloud services based on usage, with expenses categorized as capital expenditure (CapEx) and operational expenditure (OpEx)."
-    },
-    {
-        question: "What are the benefits of high availability and scalability in the cloud?",
-        answer: "Ensures continuous operation and the ability to handle increased demand."
-    },
-    {
-        question: "What are the benefits of reliability and predictability in the cloud?",
-        answer: "Consistent performance and cost management."
-    },
-    {
-        question: "What are the benefits of security and governance in the cloud?",
-        answer: "Enhanced protection and compliance with regulations."
-    },
-    {
-        question: "What are the benefits of manageability in the cloud?",
-        answer: "Simplified resource management and automation."
-    },
-    {
-        question: "What is Infrastructure as a Service (IaaS)?",
-        answer: "Provides virtualized computing resources over the internet, like servers and storage, which you can manage and configure as needed."
-    },
-    {
-        question: "What is Platform as a Service (PaaS)?",
-        answer: "Offers a platform with tools and services for developing, running, and managing applications without worrying about the underlying infrastructure."
-    },
-    {
-        question: "What is Software as a Service (SaaS)?",
-        answer: "Delivers software applications over the internet on a subscription basis, accessible via a web browser."
-    },
-    {
         question: "What are appropriate use cases for each cloud service (IaaS, PaaS, SaaS)?",
         answer: "IaaS: lift-and-shift migrations, testing and development. PaaS: application development. SaaS: using fully developed applications."
     },
@@ -307,10 +259,6 @@ const LearningObjectives = [
     {
         question: "What are Azure storage tiers?",
         answer: "Hot, Cool, and Archive tiers."
-    },
-    {
-        question: "What are Azure storage redundancy options?",
-        answer: "LRS, GRS, RA-GRS, ZRS, GZRS, RA-GZRS."
     },
     {
         question: "What are Azure storage account options and types?",
@@ -337,96 +285,16 @@ const LearningObjectives = [
         answer: "Allows secure interaction with external users and guests."
     },
     {
-        question: "What is Microsoft Entra Conditional Access?",
-        answer: "Controls access to resources based on identity signals like user, location, and device."
-    },
-    {
-        question: "What is Azure Role-Based Access Control (RBAC)?",
-        answer: "Manages access to Azure resources by assigning roles to users, groups, or services based on the principle of least privilege."
-    },
-    {
-        question: "What is the concept of Zero Trust?",
-        answer: "A security model that assumes breach and verifies every request as if it comes from an uncontrolled network."
-    },
-    {
         question: "What is the purpose of the defense in depth model?",
         answer: "Uses multiple layers of defense to protect information and prevent unauthorized access."
-    },
-    {
-        question: "What is Microsoft Defender for Cloud?",
-        answer: "Provides unified security management and advanced threat protection across hybrid cloud environments."
-    },
-    {
-        question: "What factors can affect costs in Azure?",
-        answer: "Resource type, consumption, maintenance, geography, network traffic, subscription type, Azure Marketplace."
-    },
-    {
-        question: "What is the Pricing calculator?",
-        answer: "Estimates the cost of provisioning Azure resources."
     },
     {
         question: "What is the Total Cost of Ownership (TCO) calculator?",
         answer: "Compares the costs of running on-premises infrastructure versus Azure Cloud infrastructure."
     },
     {
-        question: "What is the Microsoft Cost Management Tool?",
-        answer: "Helps manage and control Azure resource costs with features like Cost Analysis, Cost Alerts, and Budgets."
-    },
-    {
-        question: "What is the purpose of tags in Azure?",
-        answer: "Helps organize and manage resources, report costs, allocate budgets, and track spending."
-    },
-    {
-        question: "What is the purpose of Microsoft Purview? What are some of its important features?",
-        answer: "A suite of data governance, risk, and compliance solutions providing a unified view of data across environments."
-    },
-    {
-        question: "What is the purpose of Azure Policy? What are some of its important features?",
-        answer: "Ensures resources stay compliant with corporate standards by creating, assigning, and managing policies."
-    },
-    {
-        question: "What is the purpose of resource locks in Azure?",
-        answer: "Prevents accidental deletion or modification of Azure resources."
-    },
-    {
         question: "What is the Service Trust Portal?",
         answer: "Provides access to resources about Microsoft's security, privacy, and compliance practices."
-    },
-    {
-        question: "What is the Azure portal?",
-        answer: "A web-based, unified console for managing Azure resources with a graphical interface."
-    },
-    {
-        question: "What is Azure Cloud Shell?",
-        answer: "A browser-based shell tool that supports both Azure PowerShell and Azure CLI (Bash)."
-    },
-    {
-        question: "What is the purpose of Azure Arc?",
-        answer: "Simplifies governance and management of hybrid and multi-cloud environments by extending Azure compliance and monitoring."
-    },
-    {
-        question: "What is Azure Resource Manager (ARM)?",
-        answer: "A deployment and management service for Azure that manages infrastructure through declarative templates."
-    },
-    {
-        question: "What are Azure ARM templates?",
-        answer: "JSON files that define resources to deploy, ensuring consistent and repeatable deployments."
-    },
-    {
-        question: "What is the purpose of Azure Advisor?",
-        answer: "Evaluates Azure resources and provides recommendations to improve reliability, security, performance, operational excellence, and cost efficiency."
-    },
-    {
-        question: "What is Azure Service Health?",
-        answer: "Monitors the status of Azure resources and the overall Azure infrastructure, combining Azure Status, Service Health, and Resource Health."
-    },
-    {
-        question: "What is Azure Monitor?",
-        answer: "A platform for collecting, analyzing, visualizing, and acting on data from Azure, on-premises, and multi-cloud resources."
-    },
-    {
-        question: "What are Azure Log Analytics, Azure Monitor Alerts, and Application Insights?",
-        answer: "Tools within Azure Monitor for writing and running log queries, setting automated alerts, and monitoring web applications."
     }
 ];
 
