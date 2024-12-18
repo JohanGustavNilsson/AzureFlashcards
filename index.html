@@ -23,6 +23,7 @@
             <option value="DescribeAzureArchitectureAndServices">Describe Azure Architecture and Services</option>
             <option value="DescribeCloudConcepts">Describe Cloud Concepts</option>
             <option value="LearningObjectives">More learning objectives</option>
+			<option value="DescribeAzureStorageFeatures">Describe azure storage + Entra ID</option>
         </select>
         <label>
             <input type="checkbox" id="flipCheckbox" onchange="toggleFlip()"> Flip Q&A
@@ -297,6 +298,134 @@ const LearningObjectives = [
         answer: "Provides access to resources about Microsoft's security, privacy, and compliance practices."
     }
 ];
+const DescribeAzureStorageFeatures = [
+    {
+        question: "What is Azure Files?",
+        answer: "Fully managed cloud file shares accessible via SMB, NFS, and REST API. Ideal for lifting and shifting applications, replacing on-premises file servers, and storing development tools."
+    },
+    {
+        question: "What is Azure NetApp Files?",
+        answer: "Enterprise-grade NAS service for high-performance, low-latency workloads. Supports multiple file-storage protocols without code changes."
+    },
+    {
+        question: "What is Azure Blobs?",
+        answer: "Stores unstructured data at massive scale in block blobs. Supports streaming, random access, and big data analytics."
+    },
+    {
+        question: "What is Azure Elastic SAN?",
+        answer: "Integrated solution for deploying, scaling, and managing a SAN with cloud capabilities. Interoperable with multiple compute resources via iSCSI protocol."
+    },
+    {
+        question: "What is Azure Disks?",
+        answer: "Persistently store and access data from an attached virtual hard disk. Suitable for lifting and shifting applications using native file system APIs."
+    },
+    {
+        question: "What is Azure Container Storage?",
+        answer: "Volume management and orchestration service for Kubernetes, built for containers. Automatically provisions persistent volumes for stateful applications."
+    },
+    {
+        question: "What is Azure Queues?",
+        answer: "Asynchronous message queueing between application components. Decouples components using asynchronous messaging."
+    },
+    {
+        question: "What is Azure Tables?",
+        answer: "Stores structured NoSQL data with a key/attribute store and schemaless design. Ideal for flexible datasets like user data, address books, and metadata."
+    },
+    {
+        question: "What is Peering?",
+        answer: "Link virtual networks together using virtual network peering. Enables resources in each virtual network to communicate with each other."
+    },
+    {
+        question: "What are Service Endpoints?",
+        answer: "Expose Azure services to a virtual network, providing communication between the two. ExpressRoute connects an on-premises network to Azure."
+    },
+    {
+        question: "What is Storage?",
+        answer: "Blob storage is good for backups and archives, accessible via the internet. Azure Disk Storage provides disks for VMs, and Azure Files supports mounting file storage shares."
+    },
+    {
+        question: "What is Service Health?",
+        answer: "Notifies you of Azure-related service issues, such as region-wide downtime."
+    },
+    {
+        question: "What are Availability Zones?",
+        answer: "Physically separate datacenters within an Azure region. Each zone has independent power, cooling, and networking."
+    },
+    {
+        question: "What are Region Pairs?",
+        answer: "Regions in the same geography, not availability zones."
+    },
+    {
+        question: "What is Defense in Depth?",
+        answer: "A strategy using multiple mechanisms to slow an attack aiming to gain unauthorized access to data."
+    },
+    {
+        question: "What is Elasticity?",
+        answer: "The ability to scale resources as needed."
+    },
+    {
+        question: "What is Scope in Azure RBAC?",
+        answer: "The object or level to which an Azure role-based access control (RBAC) role is applied."
+    },
+    {
+        question: "What is Microsoft Entra Connect?",
+        answer: "Syncs user identities from an on-premises AD DS domain to Microsoft Entra."
+    },
+    {
+        question: "What is Azure Key Vault?",
+        answer: "A cloud service for securely storing and accessing secrets. Controls access to sensitive information."
+    },
+    {
+        question: "What are Azure Reservations?",
+        answer: "Offers discounted prices on certain Azure services."
+    },
+    {
+        question: "What is Azure Resource Manager (ARM)?",
+        answer: "Enables you to create, update, and delete resources in an Azure account."
+    },
+    {
+        question: "What is Application Insights?",
+        answer: "A feature of Azure Monitor to monitor applications, detect performance anomalies, and analyze user behavior."
+    },
+    {
+        question: "What is Data Policy in Azure Purview?",
+        answer: "Use the Microsoft Purview governance portal to manage access to data sources and datasets."
+    },
+    {
+        question: "What is Root Cause Analysis (RCA)?",
+        answer: "Service Health provides official incident reports called RCA after an outage, which you can share with stakeholders."
+    },
+    {
+        question: "What is Single Sign-On (SSO) in Azure Entra ID?",
+        answer: "Allows users to access multiple applications with one set of credentials, improving productivity and reducing password fatigue."
+    },
+    {
+        question: "What is Multi-Factor Authentication (MFA) in Azure Entra ID?",
+        answer: "Adds an extra layer of security by requiring two or more forms of verification to access resources."
+    },
+    {
+        question: "What is Conditional Access in Azure Entra ID?",
+        answer: "Enforces access controls based on conditions like user location, device compliance, or sign-in risk."
+    },
+    {
+        question: "What are Dynamic User Groups in Azure Entra ID?",
+        answer: "Automatically organizes users based on attributes like department or location, simplifying access management."
+    },
+    {
+        question: "What is Self-Service Password Reset in Azure Entra ID?",
+        answer: "Allows users to reset their passwords independently, reducing IT support burden."
+    },
+    {
+        question: "What is Guest Access and B2B Collaboration in Azure Entra ID?",
+        answer: "Facilitates secure collaboration with external partners by allowing them to access resources as guest users."
+    },
+    {
+        question: "What is Privileged Identity Management (PIM) in Azure Entra ID?",
+        answer: "Provides just-in-time access to administrative roles, reducing the risk of over-privileged accounts."
+    }
+];
+
+
 
         let currentFlashcardIndex = 0;
         let currentFlashcards = DescribeAzureManagementAndGovernance; //default set
